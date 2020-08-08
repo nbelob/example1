@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
-import { Model } from "./repository.model";
+import { Component } from '@angular/core';
+import { Model } from './repository.model';
 @Component({
-  selector: "app",
-  templateUrl: "template.html"
+  selector: 'app-product',
+  templateUrl: 'template.html'
 })
 export class ProductComponent {
   model: Model = new Model();
