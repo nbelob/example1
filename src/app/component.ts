@@ -10,11 +10,12 @@ export class ProductComponent {
     let product = this.model.getProduct(key);
     return 'p-2 ' + (product.price < 50 ? 'bg-info' : 'bg-warning');
   }
-  getClassMap(key: number): Object {
+  getStyles(key: number) {
     let product = this.model.getProduct(key);
     return {
-      'text-center bg-danger': product.name === 'Kayak',
-      'bg-info': product.price < 50
+      fontSize: '30px',
+      'margin.px': 100,
+      color: product.price > 50 ? 'red' : 'green'
     };
   }
 }
