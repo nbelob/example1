@@ -1,5 +1,5 @@
 import { ApplicationRef, Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Model } from './repository.model';
 import { Product } from './product.model';
 import { ProductFormGroup } from './form.model';
@@ -26,7 +26,7 @@ export class ProductComponent {
   addProduct(p: Product) {
     console.log('New Product: ' + this.jsonProduct);
   }
-  submitForm(form: NgForm) {
+  submitForm(form: FormGroup) {
     this.formSubmitted = true;
     if (form.valid) {
       this.addProduct(this.newProduct);

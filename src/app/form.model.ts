@@ -60,7 +60,7 @@ export class ProductFormGroup extends FormGroup {
     return Object.keys(this.controls)
       .map(k => this.controls[k] as ProductFormControl);
   }
-  getFormValidationMessages(form: any): string[] {
+  getFormValidationMessages(): string[] {
     let messages: string[] = [];
     this.productControls.forEach(c => c.getValidationMessages()
       .forEach(m => messages.push(m)));
