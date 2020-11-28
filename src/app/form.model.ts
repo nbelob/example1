@@ -1,4 +1,6 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+/* tslint:disable:quotemark */
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { LimitValidator } from "./limit.formvalidator";
 export class ProductFormControl extends FormControl {
   label: string;
   modelProperty: string;
@@ -8,26 +10,30 @@ export class ProductFormControl extends FormControl {
     this.modelProperty = property;
   }
   getValidationMessages() {
-    const messages: string[] = [];
+    let messages: string[] = [];
     if (this.errors) {
-      for (const errorName in this.errors) {
+      for (let errorName in this.errors) {
         switch (errorName) {
-          case 'required':
+          case "required":
             messages.push(`You must enter a ${this.label}`);
             break;
-          case 'minlength':
+          case "minlength":
             messages.push(`A ${this.label} must be at least
-              ${this.errors.minlength.requiredLength}
-              characters`);
+${this.errors['minlength'].requiredLength}
+characters`);
             break;
-          case 'maxlength':
+          case "maxlength":
             messages.push(`A ${this.label} must be no more than
-               ${this.errors.maxlength.requiredLength}
-               characters`);
+${this.errors['maxlength'].requiredLength}
+characters`);
             break;
-          case 'pattern':
+          case "limit":
+            messages.push(`A ${this.label} cannot be more
+than ${this.errors['limit'].limit}`);
+            break;
+          case "pattern":
             messages.push(`The ${this.label} contains
-              illegal characters`);
+illegal characters`);
             break;
         }
       }
@@ -38,15 +44,16 @@ export class ProductFormControl extends FormControl {
 export class ProductFormGroup extends FormGroup {
   constructor() {
     super({
-      name: new ProductFormControl('Name', 'name', '', Validators.required),
-      category: new ProductFormControl('Category', 'category', '',
+      name: new ProductFormControl("Name", "name", "", Validators.required),
+      category: new ProductFormControl("Category", "category", "",
         Validators.compose([Validators.required,
-          Validators.pattern('^[A-Za-z ]+$'),
+          Validators.pattern("^[A-Za-z ]+$"),
           Validators.minLength(3),
           Validators.maxLength(10)])),
-      price: new ProductFormControl('Price', 'price', '',
+      price: new ProductFormControl("Price", "price", "",
         Validators.compose([Validators.required,
-          Validators.pattern('^[0-9\.]+$')]))
+          LimitValidator.Limit(100),
+          Validators.pattern("^[0-9\.]+$")]))
     });
   }
   get productControls(): ProductFormControl[] {
@@ -54,9 +61,10 @@ export class ProductFormGroup extends FormGroup {
       .map(k => this.controls[k] as ProductFormControl);
   }
   getFormValidationMessages(form: any): string[] {
-    const messages: string[] = [];
+    let messages: string[] = [];
     this.productControls.forEach(c => c.getValidationMessages()
       .forEach(m => messages.push(m)));
     return messages;
   }
 }
+
